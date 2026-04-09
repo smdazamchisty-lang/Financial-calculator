@@ -1,91 +1,193 @@
-import React, { useState } from 'react';
-import { ShieldAlert, TrendingDown, Save, Zap } from 'lucide-react';
-import { motion } from 'framer-motion';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAR_CHEST // Survival Calculator</title>
+    <style>
+        /* CSS Variables for quick "Vibe" shifts */
+        :root {
+            --bg: #09090b;
+            --surface: #18181b;
+            --border: #27272a;
+            --accent: #f97316; /* Emergency Orange */
+            --text-main: #f4f4f5;
+            --text-dim: #71717a;
+        }
 
-export default function LandingPage() {
-  const [balance, setBalance] = useState('');
-  const [plan, setPlan] = useState(null);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  const calculateVibe = () => {
-    const amt = parseFloat(balance);
-    // Wartime Survival Logic: 50% Essentials, 30% Hard Assets/Buffer, 20% Liquidity
-    setPlan({
-      essentials: amt * 0.40, // Lean survival
-      buffer: amt * 0.40,     // Tactical reserve
-      mobility: amt * 0.20    // Bug-out cash
-    });
-  };
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-  return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-mono p-6">
-      {/* Hero Section */}
-      <nav className="flex justify-between items-center mb-20">
-        <div className="flex items-center gap-2 text-orange-500">
-          <ShieldAlert size={24} />
-          <span className="font-bold tracking-tighter text-xl">WAR_CHEST.AI</span>
-        </div>
-        <div className="text-xs text-zinc-500 underline underline-offset-4 cursor-pointer hover:text-orange-400">
-          GIT_HUB_REPO
-        </div>
-      </nav>
+        .container {
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            padding: 40px;
+            box-shadow: 10px 10px 0px rgba(0,0,0,1);
+        }
 
-      <main className="max-w-2xl mx-auto">
-        <header className="mb-12">
-          <h1 className="text-4xl font-black mb-4 uppercase tracking-tight">
-            Survival <span className="text-orange-500">Economics</span>
-          </h1>
-          <p className="text-zinc-400 leading-relaxed">
-            When the vibe shifts to emergency, your spending must shift to survival. 
-            Enter your current liquidity. We'll strip the noise.
-          </p>
+        header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .accent-text {
+            color: var(--accent);
+        }
+
+        p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--text-dim);
+        }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-main);
+            font-size: 2rem;
+            padding: 10px 0;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+        }
+
+        button {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-family: inherit;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: transform 0.1s;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #results {
+            margin-top: 30px;
+            display: none; /* Hidden until calculated */
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .result-value {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 0.6rem;
+            text-align: center;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>War_Chest<span class="accent-text">.AI</span></h1>
+            <p>Financial re-allocation for high-risk survival scenarios. Enter total liquidity to begin.</p>
         </header>
 
-        {/* Input Area */}
-        <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-none mb-8">
-          <label className="block text-xs uppercase text-zinc-500 mb-2">Total Liquid Capital ($)</label>
-          <input 
-            type="number" 
-            placeholder="0.00"
-            className="w-full bg-transparent border-b-2 border-zinc-700 text-3xl outline-none focus:border-orange-500 transition-colors pb-2"
-            value={balance}
-            onChange={(e) => setBalance(e.target.value)}
-          />
-          <button 
-            onClick={calculateVibe}
-            className="mt-8 w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 uppercase tracking-widest text-sm"
-          >
-            Generate Survival Plan
-          </button>
+        <div class="input-group">
+            <label>Current Funds (USD)</label>
+            <input type="number" id="amount" placeholder="0.00">
         </div>
 
-        {/* Results (Vibe Coding Reveal) */}
-        {plan && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-4"
-          >
-            <ResultCard icon={<Zap size={18}/>} label="Strict Essentials" amount={plan.essentials} desc="Calories, Medicine, Shelter." />
-            <ResultCard icon={<Save size={18}/>} label="Tactical Buffer" amount={plan.buffer} desc="Barter assets, hardware, fuel." />
-            <ResultCard icon={<TrendingDown size={18}/>} label="Exit Liquidity" amount={plan.mobility} desc="Cash/Gold for rapid relocation." />
-          </motion.div>
-        )}
-      </main>
-    </div>
-  );
-}
+        <button onclick="calculateSurvival()">Initialize Protocol</button>
 
-function ResultCard({ icon, label, amount, desc }) {
-  return (
-    <div className="flex justify-between items-center p-4 border border-zinc-800 bg-zinc-900/50">
-      <div className="flex items-center gap-4">
-        <div className="text-orange-500">{icon}</div>
-        <div>
-          <h3 className="text-sm font-bold uppercase">{label}</h3>
-          <p className="text-[10px] text-zinc-500">{desc}</p>
+        <div id="results">
+            <div class="result-item">
+                <span class="result-label">ESSENTIALS (40%)</span>
+                <span class="result-value" id="val-essentials">$0</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">HARD ASSETS (40%)</span>
+                <span class="result-value" id="val-assets">$0</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">MOBILITY CASH (20%)</span>
+                <span class="result-value" id="val-mobility">$0</span>
+            </div>
+            <p class="footer-note">Calculated using the Defensive Pivot Model. Stay safe.</p>
         </div>
-      </div>
-      <div className="text-xl font-mono">${amount.toLocaleString()}</div>
     </div>
-  );
-}
+
+    <script>
+        function calculateSurvival() {
+            const amount = document.getElementById('amount').value;
+            if(!amount || amount <= 0) return alert("Enter a valid amount.");
+
+            const essentials = (amount * 0.40).toFixed(2);
+            const assets = (amount * 0.40).toFixed(2);
+            const mobility = (amount * 0.20).toFixed(2);
+
+            document.getElementById('val-essentials').innerText = '$' + essentials;
+            document.getElementById('val-assets').innerText = '$' + assets;
+            document.getElementById('val-mobility').innerText = '$' + mobility;
+
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
