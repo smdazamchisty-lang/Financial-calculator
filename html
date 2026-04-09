@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+import { ShieldAlert, TrendingDown, Save, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+export default function LandingPage() {
+  const [balance, setBalance] = useState('');
+  const [plan, setPlan] = useState(null);
+
+  const calculateVibe = () => {
+    const amt = parseFloat(balance);
+    // Wartime Survival Logic: 50% Essentials, 30% Hard Assets/Buffer, 20% Liquidity
+    setPlan({
+      essentials: amt * 0.40, // Lean survival
+      buffer: amt * 0.40,     // Tactical reserve
+      mobility: amt * 0.20    // Bug-out cash
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-mono p-6">
+      {/* Hero Section */}
+      <nav className="flex justify-between items-center mb-20">
+        <div className="flex items-center gap-2 text-orange-500">
+          <ShieldAlert size={24} />
+          <span className="font-bold tracking-tighter text-xl">WAR_CHEST.AI</span>
+        </div>
+        <div className="text-xs text-zinc-500 underline underline-offset-4 cursor-pointer hover:text-orange-400">
+          GIT_HUB_REPO
+        </div>
+      </nav>
+
+      <main className="max-w-2xl mx-auto">
+        <header className="mb-12">
+          <h1 className="text-4xl font-black mb-4 uppercase tracking-tight">
+            Survival <span className="text-orange-500">Economics</span>
+          </h1>
+          <p className="text-zinc-400 leading-relaxed">
+            When the vibe shifts to emergency, your spending must shift to survival. 
+            Enter your current liquidity. We'll strip the noise.
+          </p>
+        </header>
+
+        {/* Input Area */}
+        <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-none mb-8">
+          <label className="block text-xs uppercase text-zinc-500 mb-2">Total Liquid Capital ($)</label>
+          <input 
+            type="number" 
+            placeholder="0.00"
+            className="w-full bg-transparent border-b-2 border-zinc-700 text-3xl outline-none focus:border-orange-500 transition-colors pb-2"
+            value={balance}
+            onChange={(e) => setBalance(e.target.value)}
+          />
+          <button 
+            onClick={calculateVibe}
+            className="mt-8 w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 uppercase tracking-widest text-sm"
+          >
+            Generate Survival Plan
+          </button>
+        </div>
+
+        {/* Results (Vibe Coding Reveal) */}
+        {plan && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-4"
+          >
+            <ResultCard icon={<Zap size={18}/>} label="Strict Essentials" amount={plan.essentials} desc="Calories, Medicine, Shelter." />
+            <ResultCard icon={<Save size={18}/>} label="Tactical Buffer" amount={plan.buffer} desc="Barter assets, hardware, fuel." />
+            <ResultCard icon={<TrendingDown size={18}/>} label="Exit Liquidity" amount={plan.mobility} desc="Cash/Gold for rapid relocation." />
+          </motion.div>
+        )}
+      </main>
+    </div>
+  );
+}
+
+function ResultCard({ icon, label, amount, desc }) {
+  return (
+    <div className="flex justify-between items-center p-4 border border-zinc-800 bg-zinc-900/50">
+      <div className="flex items-center gap-4">
+        <div className="text-orange-500">{icon}</div>
+        <div>
+          <h3 className="text-sm font-bold uppercase">{label}</h3>
+          <p className="text-[10px] text-zinc-500">{desc}</p>
+        </div>
+      </div>
+      <div className="text-xl font-mono">${amount.toLocaleString()}</div>
+    </div>
+  );
+}
